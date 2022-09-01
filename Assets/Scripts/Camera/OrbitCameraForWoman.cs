@@ -112,6 +112,11 @@ public class OrbitCameraForWoman : MonoBehaviour
 
     bool ManualRotation()
     {
+        if (isTouching)
+        {
+            return false;
+        }
+
         //手动旋转相机角度
         Vector2 input = new Vector2(
             Input.GetAxis("Vertical Camera"),
