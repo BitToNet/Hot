@@ -212,9 +212,8 @@ public class MoveController : MonoBehaviour
     {
         //向量v围绕y轴旋转cameraAngle.y度
         //向量旋转到正前方
-        //Vector3 vec = Quaternion.Euler(0, 0, 0) * moveVec;
-        Vector3 vec = moveVec;
-        Debug.Log(vec.ToString());
+        Vector3 vec = Quaternion.Euler(0, 0, 0) * moveVec;
+        // Vector3 vec = moveVec;
         if (vec == Vector3.zero)
             return;
         //人物看向那个方向

@@ -35,8 +35,8 @@ public class JoyStick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
         //thumb.gameObject.SetActive(true);
         thumb.transform.position = eventData.position;
 
-        //if (onJoystickDownEvent != null)
-        //    onJoystickDownEvent(eventData.position);
+        if (onJoystickDownEvent != null)
+            onJoystickDownEvent(eventData.position);
 
     }
 
@@ -80,7 +80,8 @@ public class JoyStick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     public void OnEndDrag(PointerEventData eventData)
     {
         direction= eventData.position - thumb_start;
-      
+        if (onJoystickDragEndEvent != null)
+            onJoystickDragEndEvent(direction);
         Debug.Log("结束拖动");
     }
 }

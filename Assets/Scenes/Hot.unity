@@ -501,14 +501,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   focus: {fileID: 1973627396}
   focusRadius: 1
-  distance: 5
+  distance: 1
   focusCentering: 0.5
-  rotationSpeed: 90
+  rotationSpeed: 3600
   minVerticalAngle: 10
   maxVerticalAngle: 89
   alignDelay: 5
   alignSmoothRange: 45
-  joystick: {fileID: 0}
+  joystick: {fileID: 2047060167}
 --- !u!1001 &1500446136
 PrefabInstance:
   m_ObjectHideFlags: 0
