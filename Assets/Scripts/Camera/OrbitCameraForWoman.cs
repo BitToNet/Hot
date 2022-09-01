@@ -30,7 +30,7 @@ public class OrbitCameraForWoman : MonoBehaviour
     [SerializeField, Range(0f, 90f)] float alignSmoothRange = 45f;
 
 
-    //相机轨道角
+    //相机轨道角，x是相机高度，y是相机左右方向
     Vector2 orbitAngles = new Vector2(25f, 0f);
 
     //滑动冲突
@@ -82,6 +82,7 @@ public class OrbitCameraForWoman : MonoBehaviour
         Vector3 lookDirection = lookRotation * Vector3.forward;
         // 跳到目标位置后面
         Vector3 lookPosition = focusPoint - lookDirection * distance;
+        //相机抬高一点，不然只能看到脚
         lookPosition.y += 2;
         transform.SetPositionAndRotation(lookPosition, lookRotation);
     }
@@ -151,10 +152,12 @@ public class OrbitCameraForWoman : MonoBehaviour
         }
 
         // Mathf.Sqrt -->平方根，参数：向量除以半径，就是单位向量
-        // 航线角度
+        // 相机旋转角度
         float headingAngle = GetAngle(movement / Mathf.Sqrt(movementDeltaSqr));
+        //两个角度在坐标轴的夹角，也就是需要转化的角度
         float deltaAbs = Mathf.Abs(Mathf.DeltaAngle(orbitAngles.y, headingAngle));
-        //相机实际旋转角度
+        //相机旋转角度增量、或？速度
+        //min是为了抑制小角度旋转
         float rotationChange =
             rotationSpeed * Mathf.Min(Time.unscaledDeltaTime, movementDeltaSqr);
         if (deltaAbs < alignSmoothRange)
@@ -166,6 +169,7 @@ public class OrbitCameraForWoman : MonoBehaviour
             rotationChange *= (180f - deltaAbs) / alignSmoothRange;
         }
         
+        //MoveTowardsAngle：模拟手动旋转去调整镜头
         orbitAngles.y =
             Mathf.MoveTowardsAngle(orbitAngles.y, headingAngle, rotationChange);
         return true;

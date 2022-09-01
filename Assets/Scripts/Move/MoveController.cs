@@ -57,6 +57,7 @@ public class MoveController : MonoBehaviour
     //最小地面点积
     float minGroundDotProduct;
 
+    //期望速度
     private Vector3 desiredVelocity;
 
     //跳跃
@@ -99,6 +100,7 @@ public class MoveController : MonoBehaviour
         // playerInput.y = Input.GetAxis("Vertical");
         playerInput = Vector2.ClampMagnitude(playerInput, 1f);
 
+        //定义期望速度
         desiredVelocity = new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
         desiredJump |= Input.GetButtonDown("Jump");
 
@@ -113,7 +115,9 @@ public class MoveController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //更新速度、跳跃状态
         UpdateState();
+        //调整速度
         AdjustVelocity();
         if (desiredJump)
         {
@@ -189,13 +193,19 @@ public class MoveController : MonoBehaviour
 
     void AdjustVelocity()
     {
+        //normalized：返回大小为1的词此向量
+        //方向向量？
         Vector3 xAxis = ProjectOnContactPlane(Vector3.right).normalized;
         Vector3 zAxis = ProjectOnContactPlane(Vector3.forward).normalized;
+        //x方向的速度
         float currentX = Vector3.Dot(velocity, xAxis);
         float currentZ = Vector3.Dot(velocity, zAxis);
+        //最大加速度
         float acceleration = OnGround ? maxAcceleration : maxAirAcceleration;
+        //最大速度
         float maxSpeedChange = acceleration * Time.deltaTime;
 
+        //MoveTowards：将a变为b，最大不可超过c
         float newX =
             Mathf.MoveTowards(currentX, desiredVelocity.x, maxSpeedChange);
         float newZ =
