@@ -46,6 +46,7 @@ public class MoveController : MonoBehaviour
     //速度
     private Vector3 velocity;
     int groundContactCount;
+    private int skinIndex = 1;
 
     bool OnGround => groundContactCount > 0;
 
@@ -77,6 +78,9 @@ public class MoveController : MonoBehaviour
 
     void Start()
     {
+        //开启多点触控
+        Input.multiTouchEnabled = true;
+        
         am = transform.GetComponent<Animator>();
 
         // joystick.onJoystickDownEvent += OnJoystickDownEvent;
@@ -87,6 +91,25 @@ public class MoveController : MonoBehaviour
 
     void Update()
     {
+
+        if (Input.touchCount == 2)
+        {
+            //双指跳跃
+            if (Input.touches[1].phase == TouchPhase.Began)
+            {
+                desiredJump = true;
+            }
+            
+        }
+        if (Input.touchCount == 3)
+        {
+            //三指换装
+            if (Input.touches[2].phase == TouchPhase.Began)
+            {
+                ChangeSkinToIndex(skinIndex++%3+1);
+            }
+        }
+
         if (skinBody != null)
         {
             ChangeSkin();
@@ -236,31 +259,49 @@ public class MoveController : MonoBehaviour
         // 换肤
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            skinBody.material = ware1;
-            eye.material = eyeball1;
-            face.material = skin1;
-            hair.material = skin1;
-            hand.material = ware1;
-            pouch.material = ware1;
+            ChangeSkinToIndex(1);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            skinBody.material = ware2;
-            eye.material = eyeball2;
-            face.material = skin2;
-            hair.material = skin2;
-            hand.material = ware2;
-            pouch.material = ware2;
+            ChangeSkinToIndex(2);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            skinBody.material = ware3;
-            eye.material = eyeball3;
-            face.material = skin3;
-            hair.material = skin3;
-            hand.material = ware3;
-            pouch.material = ware3;
+            ChangeSkinToIndex(3);
         }
+    }
+
+    private void ChangeSkinToIndex(int index)
+    {
+        switch (index)
+        {
+            case 1:
+                skinBody.material = ware1;
+                eye.material = eyeball1;
+                face.material = skin1;
+                hair.material = skin1;
+                hand.material = ware1;
+                pouch.material = ware1;
+                break;
+            case 2:
+                skinBody.material = ware2;
+                eye.material = eyeball2;
+                face.material = skin2;
+                hair.material = skin2;
+                hand.material = ware2;
+                pouch.material = ware2;
+                break;
+            case 3:
+                skinBody.material = ware3;
+                eye.material = eyeball3;
+                face.material = skin3;
+                hair.material = skin3;
+                hand.material = ware3;
+                pouch.material = ware3;
+                break;
+            
+        }
+    
     }
 
     void OnDestroy()

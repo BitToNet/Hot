@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.5444161, g: 0.5070113, b: 0.5242729, a: 1}
+  m_IndirectSpecularColor: {r: 0.5446126, g: 0.50843847, b: 0.52387345, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -332,6 +332,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1698027784}
     m_Modifications:
+    - target: {fileID: 6623534199059144597, guid: 47af27d5673c44d58bac99c17212e65b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 6623534199059144597, guid: 47af27d5673c44d58bac99c17212e65b, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 150
+      objectReference: {fileID: 0}
     - target: {fileID: 6623534199481389244, guid: 47af27d5673c44d58bac99c17212e65b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -362,11 +370,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6623534199481389244, guid: 47af27d5673c44d58bac99c17212e65b, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 130
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 6623534199481389244, guid: 47af27d5673c44d58bac99c17212e65b, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 130
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 6623534199481389244, guid: 47af27d5673c44d58bac99c17212e65b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -398,11 +406,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6623534199481389244, guid: 47af27d5673c44d58bac99c17212e65b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 100
+      value: 327
       objectReference: {fileID: 0}
     - target: {fileID: 6623534199481389244, guid: 47af27d5673c44d58bac99c17212e65b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 100
+      value: 280
       objectReference: {fileID: 0}
     - target: {fileID: 6623534199481389244, guid: 47af27d5673c44d58bac99c17212e65b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -524,7 +532,7 @@ MonoBehaviour:
   distance: 2.3
   focusCentering: 0.5
   rotationSpeed: 2136
-  minVerticalAngle: 10
+  minVerticalAngle: -89
   maxVerticalAngle: 89
   alignDelay: 0
   alignSmoothRange: 45

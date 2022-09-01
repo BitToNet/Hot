@@ -35,7 +35,12 @@ public class OrbitCameraForWoman : MonoBehaviour
 
     //滑动冲突
     public JoyStick joystick;
+
+    //摇杆被操作
     private bool isTouching = false;
+
+    //鼠标按下
+    private bool isHouseDown = false;
 
     Vector3 focusPoint, previousFocusPoint;
 
@@ -50,6 +55,7 @@ public class OrbitCameraForWoman : MonoBehaviour
 
     private void Start()
     {
+        Input.multiTouchEnabled = true;
         if (joystick != null)
         {
             joystick.onJoystickDownEvent += OnJoystickDownEvent;
@@ -77,7 +83,7 @@ public class OrbitCameraForWoman : MonoBehaviour
             lookRotation = transform.localRotation;
         }
 
-       
+
         //todo 方向的计算规则不清楚？？？
         Vector3 lookDirection = lookRotation * Vector3.forward;
         // 跳到目标位置后面
@@ -110,9 +116,10 @@ public class OrbitCameraForWoman : MonoBehaviour
         }
     }
 
+
     bool ManualRotation()
     {
-        if (isTouching)
+        if (!Input.GetMouseButton(0)|| isTouching)
         {
             return false;
         }
@@ -125,6 +132,10 @@ public class OrbitCameraForWoman : MonoBehaviour
         const float e = 0.001f;
         if (input.x < -e || input.x > e || input.y < -e || input.y > e)
         {
+            if (Input.touchCount > 1)
+            {
+                return false;
+            }
             orbitAngles += rotationSpeed * Time.unscaledDeltaTime * input;
             lastManualRotationTime = Time.unscaledTime;
             return true;
@@ -173,7 +184,7 @@ public class OrbitCameraForWoman : MonoBehaviour
         {
             rotationChange *= (180f - deltaAbs) / alignSmoothRange;
         }
-        
+
         //MoveTowardsAngle：模拟手动旋转去调整镜头
         orbitAngles.y =
             Mathf.MoveTowardsAngle(orbitAngles.y, headingAngle, rotationChange);
