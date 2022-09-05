@@ -64,6 +64,8 @@ public class MoveController : MonoBehaviour
     //跳跃
     bool desiredJump;
     Vector3 contactNormal;
+    // 相机航向角
+    private float _orbitAngles = 0;
 
     void OnValidate()
     {
@@ -83,10 +85,10 @@ public class MoveController : MonoBehaviour
         
         am = transform.GetComponent<Animator>();
 
-        // joystick.onJoystickDownEvent += OnJoystickDownEvent;
+        joystick.onJoystickDownEvent += OnJoystickDownEvent;
         joystick.onJoystickUpEvent += OnJoystickUpEvent;
         joystick.onJoystickDragEvent += OnJoystickDragEvent;
-        //joystick.onJoystickDragEndEvent += OnJoystickDragEndEvent;
+        joystick.onJoystickDragEndEvent += OnJoystickDragEndEvent;
     }
 
     void Update()
@@ -115,24 +117,37 @@ public class MoveController : MonoBehaviour
             ChangeSkin();
         }
         am.SetBool("run", isRun);
+        
+       
 
-        Vector2 playerInput;
-        playerInput.x = h;
-        playerInput.y = v;
-        // playerInput.x = Input.GetAxis("Horizontal");
-        // playerInput.y = Input.GetAxis("Vertical");
-        playerInput = Vector2.ClampMagnitude(playerInput, 1f);
-
-        //定义期望速度
-        desiredVelocity = new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
         desiredJump |= Input.GetButtonDown("Jump");
 
         if (isRun && (h != 0 || v != 0))
-        {
-            // 根据摄像机方向 进行移动 和摄像机保持相对平行视角
-            // moveVec = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0) * moveVec;
-            // nav.Move(moveVec * Time.deltaTime * 5);
+        { //运动角度(相对于世界坐标) - 减去相机相对世界坐标的偏移角
+            var atan2 = Mathf.Atan2(v, h) * Mathf.Rad2Deg;
+            float angle = atan2 -_orbitAngles;
+            Vector2 playerInput;
+            angle *= Mathf.Deg2Rad;
+            playerInput.y = Mathf.Sin(angle);
+            playerInput.x = Mathf.Cos(angle);
+            // playerInput.x = h;
+            // playerInput.y = v;
+            
+            // playerInput.x = Input.GetAxis("Horizontal");
+            // playerInput.y = Input.GetAxis("Vertical");
+            // ClampMagnitude：返回单位向量
+            playerInput = Vector2.ClampMagnitude(playerInput, 1f);
+
+            //定义期望速度
+            desiredVelocity = new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
+            moveVec = new Vector3(playerInput.x, 0f, playerInput.y).normalized;
+            
             RotatePlayer();
+        }
+        else
+        {
+            //定义期望速度
+            desiredVelocity = Vector3.zero;
         }
     }
 
@@ -306,10 +321,10 @@ public class MoveController : MonoBehaviour
 
     void OnDestroy()
     {
-        //joystick.onJoystickDownEvent -= OnJoystickDownEvent;
+        joystick.onJoystickDownEvent -= OnJoystickDownEvent;
         joystick.onJoystickUpEvent -= OnJoystickUpEvent;
         joystick.onJoystickDragEvent -= OnJoystickDragEvent;
-        //joystick.onJoystickDragEndEvent -= OnJoystickDragEndEvent;
+        joystick.onJoystickDragEndEvent -= OnJoystickDragEndEvent;
     }
 
     private void OnJoystickUpEvent()
@@ -319,7 +334,7 @@ public class MoveController : MonoBehaviour
         h = 0;
         v = 0;
 
-        moveVec = new Vector3(h, 0, v).normalized;
+        // moveVec = new Vector3(h, 0, v).normalized;
     }
 
     /// <summary>
@@ -333,7 +348,15 @@ public class MoveController : MonoBehaviour
         h = 0;
         v = 0;
 
-        moveVec = new Vector3(h, 0, v).normalized;
+        // moveVec = new Vector3(h, 0, v).normalized;
+        if (Camera.main != null)
+        {
+            _orbitAngles = Camera.main.transform.eulerAngles.y;
+            if (_orbitAngles > 180)
+            {
+                _orbitAngles = -(360 - _orbitAngles);
+            }
+        }
     }
 
     /// <summary>
@@ -347,7 +370,7 @@ public class MoveController : MonoBehaviour
         h = obj.x;
         v = obj.y;
 
-        moveVec = new Vector3(h, 0, v).normalized;
+        // moveVec = new Vector3(h, 0, v).normalized;
     }
 
     /// <summary>
