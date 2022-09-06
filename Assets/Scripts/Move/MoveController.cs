@@ -117,8 +117,6 @@ public class MoveController : MonoBehaviour
             ChangeSkin();
         }
         am.SetBool("run", isRun);
-        
-       
 
         desiredJump |= Input.GetButtonDown("Jump");
 
@@ -227,6 +225,16 @@ public class MoveController : MonoBehaviour
                 contactNormal += normal;
             }
         }
+    }
+    
+    public void OnSkinChangeBtnClick()
+    {
+        ChangeSkinToIndex(skinIndex++%3+1);
+    }
+    
+    public void OnJumpBtnClick()
+    {
+        desiredJump = true;
     }
 
     void AdjustVelocity()
