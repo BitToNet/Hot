@@ -94,23 +94,23 @@ public class MoveController : MonoBehaviour
     void Update()
     {
 
-        if (Input.touchCount == 2)
-        {
-            //双指跳跃
-            if (Input.touches[1].phase == TouchPhase.Began)
-            {
-                desiredJump = true;
-            }
-            
-        }
-        if (Input.touchCount == 3)
-        {
-            //三指换装
-            if (Input.touches[2].phase == TouchPhase.Began)
-            {
-                ChangeSkinToIndex(skinIndex++%3+1);
-            }
-        }
+        // if (Input.touchCount == 2)
+        // {
+        //     //双指跳跃
+        //     if (Input.touches[1].phase == TouchPhase.Began)
+        //     {
+        //         desiredJump = true;
+        //     }
+        //     
+        // }
+        // if (Input.touchCount == 3)
+        // {
+        //     //三指换装
+        //     if (Input.touches[2].phase == TouchPhase.Began)
+        //     {
+        //         ChangeSkinToIndex(skinIndex++%3+1);
+        //     }
+        // }
 
         if (skinBody != null)
         {
