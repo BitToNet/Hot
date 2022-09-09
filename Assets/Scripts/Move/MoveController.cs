@@ -6,7 +6,9 @@ public class MoveController : MonoBehaviour
 {
     public JoyStick joystick;
     bool isRun;
-    float h, v;
+    bool jumping;
+    private int anmationState = 0;
+    float joystickH, joystickV;
     Vector3 moveVec;
     Animator am;
 
@@ -63,9 +65,12 @@ public class MoveController : MonoBehaviour
 
     //跳跃
     bool desiredJump;
+
     Vector3 contactNormal;
+
     // 相机航向角
     private float _orbitAngles = 0;
+    private static readonly int State = Animator.StringToHash("state");
 
     void OnValidate()
     {
@@ -82,7 +87,7 @@ public class MoveController : MonoBehaviour
     {
         //开启多点触控
         Input.multiTouchEnabled = true;
-        
+
         am = transform.GetComponent<Animator>();
 
         joystick.onJoystickDownEvent += OnJoystickDownEvent;
@@ -93,7 +98,6 @@ public class MoveController : MonoBehaviour
 
     void Update()
     {
-
         // if (Input.touchCount == 2)
         // {
         //     //双指跳跃
@@ -116,14 +120,44 @@ public class MoveController : MonoBehaviour
         {
             ChangeSkin();
         }
+
+        if (velocity.y == 0)
+        {
+            jumping = false;
+        }
+
         am.SetBool("run", isRun);
+        am.SetBool("onGround", jumpPhase == 0);
+        // if (!OnGround)
+        // {
+        //     am.SetInteger(State, 2);
+        // }
+        // else
+        // {
+        //     am.SetInteger(State, isRun ? 1 : 0);
+        // }
 
         desiredJump |= Input.GetButtonDown("Jump");
-
-        if (isRun && (h != 0 || v != 0))
-        { //运动角度(相对于世界坐标) - 减去相机相对世界坐标的偏移角
-            var atan2 = Mathf.Atan2(v, h) * Mathf.Rad2Deg;
-            float angle = atan2 -_orbitAngles;
+        float x, y;
+        //优先手机端控制
+        x = joystickH;
+        y = joystickV;
+       
+        if (x != 0 || y != 0)
+        {
+        }
+        else
+        {
+            x = Input.GetAxis("Horizontal")*1000;
+            y = Input.GetAxis("Vertical")*1000;
+            isRun = (x != 0 || y != 0);
+        }
+       
+        if (isRun && (x != 0 || y != 0))
+        {
+            //运动角度(相对于世界坐标) - 减去相机相对世界坐标的偏移角
+            var atan2 = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
+            float angle = atan2 - _orbitAngles;
             Vector2 playerInput;
             angle *= Mathf.Deg2Rad;
             playerInput.y = Mathf.Sin(angle);
@@ -139,7 +173,7 @@ public class MoveController : MonoBehaviour
             //定义期望速度
             desiredVelocity = new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
             moveVec = new Vector3(playerInput.x, 0f, playerInput.y).normalized;
-            
+
             RotatePlayer();
         }
         else
@@ -192,6 +226,7 @@ public class MoveController : MonoBehaviour
     {
         if (OnGround || jumpPhase < maxAirJumps)
         {
+            jumping = true;
             jumpPhase += 1;
             float jumpSpeed = Mathf.Sqrt(-2f * Physics.gravity.y * jumpHeight);
             float alignedSpeed = Vector3.Dot(velocity, contactNormal);
@@ -226,12 +261,12 @@ public class MoveController : MonoBehaviour
             }
         }
     }
-    
+
     public void OnSkinChangeBtnClick()
     {
-        ChangeSkinToIndex(skinIndex++%3+1);
+        ChangeSkinToIndex(skinIndex++ % 3 + 1);
     }
-    
+
     public void OnJumpBtnClick()
     {
         desiredJump = true;
@@ -322,9 +357,7 @@ public class MoveController : MonoBehaviour
                 hand.material = ware3;
                 pouch.material = ware3;
                 break;
-            
         }
-    
     }
 
     void OnDestroy()
@@ -339,8 +372,8 @@ public class MoveController : MonoBehaviour
     {
         //停止移动
         isRun = false;
-        h = 0;
-        v = 0;
+        joystickH = 0;
+        joystickV = 0;
 
         // moveVec = new Vector3(h, 0, v).normalized;
     }
@@ -353,8 +386,8 @@ public class MoveController : MonoBehaviour
     {
         //停止移动
         isRun = false;
-        h = 0;
-        v = 0;
+        joystickH = 0;
+        joystickV = 0;
 
         // moveVec = new Vector3(h, 0, v).normalized;
         if (Camera.main != null)
@@ -375,8 +408,8 @@ public class MoveController : MonoBehaviour
     {
         //开始移动
         isRun = true;
-        h = obj.x;
-        v = obj.y;
+        joystickH = obj.x;
+        joystickV = obj.y;
 
         // moveVec = new Vector3(h, 0, v).normalized;
     }
