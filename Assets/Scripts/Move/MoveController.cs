@@ -70,7 +70,7 @@ public class MoveController : MonoBehaviour
 
     // 相机航向角
     private float _orbitAngles = 0;
-    private static readonly int State = Animator.StringToHash("state");
+    private static readonly int Speed = Animator.StringToHash("speed");
 
     void OnValidate()
     {
