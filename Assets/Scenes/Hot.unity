@@ -637,7 +637,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 67ec164da4a57da4aa42663af03c4c1d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 67ec164da4a57da4aa42663af03c4c1d, type: 3}
       propertyPath: m_RootOrder
@@ -959,6 +959,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 1d927b1c1e7e643d9bd95190de31a797, type: 3}
       propertyPath: m_Name
       value: mingrixiang
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1d927b1c1e7e643d9bd95190de31a797, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 1d927b1c1e7e643d9bd95190de31a797, type: 3}
       propertyPath: m_Controller
@@ -1319,7 +1323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fddc4829a99fc49438fe88c5f9421456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focus: {fileID: 1438768923}
+  focus: {fileID: 1973627395}
   focusRadius: 1
   distance: 2.3
   focusCentering: 0.5
@@ -1632,11 +1636,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!4 &1438768923 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1d927b1c1e7e643d9bd95190de31a797, type: 3}
-  m_PrefabInstance: {fileID: 811126232}
-  m_PrefabAsset: {fileID: 0}
 --- !u!64 &1438768924
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2447,6 +2446,11 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!4 &1973627395 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400000, guid: 67ec164da4a57da4aa42663af03c4c1d, type: 3}
+  m_PrefabInstance: {fileID: 669331395}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2021559067
 PrefabInstance:
   m_ObjectHideFlags: 0
